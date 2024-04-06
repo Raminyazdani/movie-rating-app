@@ -14,7 +14,6 @@ const store = configureStore({
         user: userReducer,
         reviews: reviewsReducer,
         recommendations: RecommendationSlice,
-// Add the reviews reducer here
     },
 });
 

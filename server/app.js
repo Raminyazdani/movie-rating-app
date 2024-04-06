@@ -1,5 +1,5 @@
 // Load environment variables from .env file
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 
 // Import necessary libraries
 const express = require('express'); // Express framework for handling HTTP requests
@@ -13,10 +13,8 @@ const favoriteRoutes = require('./routes/favoritesRoutes'); // Routes related to
 const ratingRoutes = require('./routes/ratingsRoutes'); // Routes related to ratings
 const reviewRoutes = require('./routes/reviewsRoutes'); // Routes related to reviews
 const recommendationsRoutes = require('./routes/recommendationsRoutes'); // Routes for fetching recommendations
-
 // Initialize express app
 const app = express();
-
 // Apply necessary middleware
 app.use(cors()); // Enable CORS for all routes
 app.use(bodyParser.json()); // Parse JSON bodies of incoming requests

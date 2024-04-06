@@ -5,7 +5,10 @@ import {Box, Card, CardContent, CardMedia, Grid, ToggleButton, ToggleButtonGroup
 import RatingComponent from "./Rating";
 import Review from "./Review";
 import FavoriteComponent from "./Favorite";
-import {fetchDetailsAndMemoize, getMovieGrid} from "../config/apiClient";
+import {getMovieGrid} from "../api/services/gridService";
+
+
+import {fetchDetailsAndMemoize} from "../api/services/detailandmemoService";
 
 const MovieGrid = () => {
     const [filterOption, setFilterOption] = useState('all');
@@ -15,7 +18,6 @@ const MovieGrid = () => {
     const [page, setPage] = useState(1);
     const defaultImageUrl = 'YOUR_DEFAULT_IMAGE_URL_HERE';
     const {recommendations} = useSelector((state) => state.recommendations);
-    const [recommendation_data, recommendation_data_setter] = useState([]);
     const observer = useRef();
     const loadingRef = useRef(loading); // Use a ref for loading state to use in the observer callback
     const noDataImageUrl = 'https://static.thenounproject.com/png/1496955-200.png';
@@ -24,34 +26,7 @@ const MovieGrid = () => {
         loadingRef.current = loading; // Update loading ref during loading state changes
     }, [loading]);
 
-    // useEffect(() => {
-        // Ensure recommendations is not empty
 
-    //     const fetchAllDetails = async () => {
-    //         try {
-    //             // Map each recommendation to a call to fetchDetailsAndMemoize, which returns a promise
-    //             // log all the movie_id and type
-    //             // using map fetch details and memoize everything in recommendations with await
-    //             const detailsPromises = recommendation_data.map(recommendation_data =>
-    //                 fetchDetailsAndMemoize(recommendation_data.movie_id, recommendation_data.type)
-    //             );
-    //
-    //             // Wait for all promises to resolve
-    //             const details = await Promise.all(detailsPromises);
-    //
-    //             // Filter out any null values
-    //             const filteredDetails = details.filter(detail => detail !== null);
-    //
-    //             // Set the filtered details to state
-    //             recommendation_data_setter(filteredDetails);
-    //         } catch (error) {
-    //             console.error('Failed to fetch movie details:', error);
-    //         }
-    //
-    //
-    //         fetchAllDetails();
-    //     }
-    // }, [recommendation_data]);
 
     useEffect(() => {
         setLoading(true);

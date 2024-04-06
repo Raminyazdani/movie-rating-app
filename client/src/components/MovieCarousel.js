@@ -1,11 +1,11 @@
-import React, {useEffect, useState, useMemo} from 'react';
-import {apiMovie, getMovieCarousel} from '../config/apiClient';
+import React, {useEffect, useState} from 'react';
 import Carousel from 'react-material-ui-carousel';
 import {Box, Button, Card, CardContent, CircularProgress, Typography} from "@mui/material";
 import FavoriteComponent from './Favorite';
 import RatingComponent from "./Rating";
 import SectionHeading from "./SectionHeading";
 import Review from "./Review";
+import {getMovieCarousel} from "../api/services/carouselService";
 
 const defaultImageUrl = 'https://motivatevalmorgan.com/wp-content/uploads/2016/06/default-movie-768x1129.jpg';
 

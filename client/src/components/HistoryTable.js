@@ -9,16 +9,16 @@ import {
     TableContainer,
     TableRow,
     Paper,
-    TextField,
-    IconButton,
     Box, Typography, Tooltip, CardMedia, CardContent, Card
 } from '@mui/material';
 import FavoriteComponent from './Favorite';
 import RatingComponent from './Rating';
-import {apiMovie, fetchDetailsAndMemoize} from '../config/apiClient';
 import SectionHeading from "./SectionHeading";
 import {KeyboardArrowUp as SortAscending, KeyboardArrowDown as SortDescending} from '@mui/icons-material';
 import Review from "./Review";
+
+
+import {fetchDetailsAndMemoize} from "../api/services/detailandmemoService";
 
 function HistoryTable() {
     const {ratings} = useSelector(state => state.ratings);
@@ -26,7 +26,6 @@ function HistoryTable() {
     const {reviews} = useSelector(state => state.reviews);
     const [moviesDetails, setMoviesDetails] = useState([]);
     const [movies, setMoviesList] = useState([]);
-    const [filterValue, setFilterValue] = useState('');
     const [sortColumn, setSortColumn] = useState(null);
     const [sortDirection, setSortDirection] = useState('asc');
     const noDataImageUrl = 'https://static.thenounproject.com/png/1496955-200.png';
@@ -42,7 +41,7 @@ function HistoryTable() {
         const truncated = words.slice(0, 5).join(' ');
         return words.length > 10 ? `${truncated}...` : truncated;
     };
-    const fetchMovieDetails = async () => {
+    const fetchMovieDetails = useCallback(async () => {
         const moviesData = [];
         await Promise.all(movies.map(async (movie_item) => {
             const movieDetails = await getMovieDetails(movie_item.id, movie_item.type || movie_item.Type, "history");
@@ -53,10 +52,10 @@ function HistoryTable() {
             }
         }));
         setMoviesDetails(moviesData);
+    }, [movies, getMovieDetails]); // Add `movies` and `getMovieDetails` as dependencies
 
-    };
 
-    const getMovies = async () => {
+    const getMovies = useCallback(async () => {
         const favoriteIds = favorites.map(fav => `${fav.movie_id}:${fav.type}`);
         const ratingIds = ratings.map(ratingObject => {
             const [id, details] = Object.entries(ratingObject)[0];
@@ -76,16 +75,19 @@ function HistoryTable() {
             }
         );
         setMoviesList(movies_list_json);
-
-    };
+    }, [favorites, ratings, reviews]);
 
     useEffect(() => {
         getMovies();
-    }, [ratings, favorites, reviews]);
+    }, [getMovies]);
 
     useEffect(() => {
         fetchMovieDetails();
-    }, [movies]);
+    }, [fetchMovieDetails]); // `fetchMovieDetails` is now a dependency
+
+
+
+
     const isXsScreen = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
     const handleSort = (column) => {
@@ -104,8 +106,9 @@ function HistoryTable() {
 
 
         const comparator = (movieObjA, movieObjB) => {
-            const [movieIdA, tempmovieDetailsA] = Object.entries(movieObjA)[0];
-            const [movieIdB, tempmovieDetailsB] = Object.entries(movieObjB)[0];
+            const tempmovieDetailsA = Object.entries(movieObjA)[0][1];
+            const tempmovieDetailsB = Object.entries(movieObjB)[0][1];
+
 
             const valueA = tempmovieDetailsA[sortColumn] || '';
             const valueB = tempmovieDetailsB[sortColumn] || '';

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Box, CssBaseline} from '@mui/material';
 import NavBar from './components/NavBar';
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,8 +16,10 @@ import Dashboard from "./components/DashBoard";
 import SearchBar from "./components/SearchBar";
 import {fetchReviews} from "./features/review/reviewSlice";
 import {fetchRecommendations} from "./features/recommendation/recommendationSlice";
-import { Snackbar } from '@mui/material';
+import {Snackbar} from '@mui/material';
 import Alert from '@mui/material/Alert';
+
+
 function App() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
@@ -30,12 +32,11 @@ function App() {
 
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') return;
-        dispatch(setSnackbar({ ...snackbar, open: false }));
+        dispatch(setSnackbar({...snackbar, open: false}));
     };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            localStorage.clear()
             if (currentUser) {
 
                 const userInfo = {
@@ -53,7 +54,7 @@ function App() {
 
                             dispatch(fetchFavorites(userId));
 
-                            dispatch(fetchReviews({userId:userId}));
+                            dispatch(fetchReviews({userId: userId}));
                             dispatch(fetchRecommendations(userId))
 
                         }
@@ -84,12 +85,12 @@ function App() {
             <CssBaseline/>
             <NavBar/>
 
-            <Box component="main" sx={{flex: 1,paddingX:"1vw"}}>
+            <Box component="main" sx={{flex: 1, paddingX: "1vw"}}>
                 <MovieCarousel/>
                 <Dashboard>
-                    <HistoryTable />
-                    <SearchBar />
-                    <MovieGrid />
+                    <HistoryTable/>
+                    <SearchBar/>
+                    <MovieGrid/>
                 </Dashboard>
                 <div>
                     <p>User ID: {userId}</p>

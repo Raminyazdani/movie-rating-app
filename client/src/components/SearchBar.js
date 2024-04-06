@@ -13,14 +13,12 @@ import {
     ToggleButtonGroup, Grid
 } from '@mui/material';
 import SectionHeading from "./SectionHeading";
-import {
-    apiMovie,
-    fetchByTitle,
-    fetchDetailsAndMemoize,
-} from "../config/apiClient";
 import FavoriteComponent from './Favorite';
 import RatingComponent from "./Rating";
 import Review from "./Review";
+
+
+import {fetchByTitle} from "../api/services/titleService";
 
 const defaultImageUrl = 'https://cdn-icons-png.flaticon.com/512/0/375.png'; // Your default poster image URL
 
